@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include tmweare_hr *.css
+recursive-include tmweare_hr *.csv
+recursive-include tmweare_hr *.html
+recursive-include tmweare_hr *.ico
+recursive-include tmweare_hr *.js
+recursive-include tmweare_hr *.json
+recursive-include tmweare_hr *.md
+recursive-include tmweare_hr *.png
+recursive-include tmweare_hr *.py
+recursive-include tmweare_hr *.svg
+recursive-include tmweare_hr *.txt
+recursive-exclude tmweare_hr *.pyc
