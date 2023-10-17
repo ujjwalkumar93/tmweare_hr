@@ -11,7 +11,8 @@ def calculate_distance(emp_lat, emp_long):
         if not system_latitude or not system_longitude:
             #frappe.throw('Ask admin to enter latitude & longitude in attendance setting')
             invalid_distance = 1
-            return invalid_distance
+            frappe.throw('Ask admin to enter latitude & longitude in attendance setting')
+            # return invalid_distance
             
         else:
             # Radius of the Earth in kilometers
