@@ -5,17 +5,16 @@ def calculate_distance(emp_lat, emp_long):
     system_latitude = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'latitude';", as_dict=1)
     system_longitude = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'longitude';", as_dict=1)
     enable_location = maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'enable';", as_dict=1)[0].get('value')
-    frappe.throw(enable_location)
+    invalid_distance = 0
+
     if enable_location == 1:
         if not system_latitude or not system_longitude:
             frappe.throw('Ask admin to enter latitude & longitude in attendance setting')
-            return {
-                'invalid_distance' : 1
-            }
+            invalid_distance = 1
+            return data
         else:
             # Radius of the Earth in kilometers
             radius = 6371.0
-
             # Convert latitude and longitude from degrees to radians
             system_lat = math.radians(float(system_latitude[0].get('value')))
             system_lon = math.radians(float(system_longitude[0].get('value')))
@@ -31,13 +30,9 @@ def calculate_distance(emp_lat, emp_long):
             maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'maximum_distance';", as_dict=1)[0].get('value')
             frappe.throw("{0}-{1}".format(employee_distance, maximum_allowed_distance))
             if employee_distance > float(maximum_allowed_distance):
-                return {
-                    'invalid_distance' : 1
-                }
-            else:
-                return {
-                    'invalid_distance' : 0
-                }
+                invalid_distance = 1
+    return invalid_distance
+
 
 
 

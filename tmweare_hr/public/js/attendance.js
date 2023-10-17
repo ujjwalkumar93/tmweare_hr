@@ -12,7 +12,7 @@ frappe.ui.form.on('Attendance', {
                         emp_long : employeeLongitude
                     },
                     callback : (resp) => {
-                        console.log('responce is: ', resp.message.invalid_distance)
+                        console.log('responce is: ', resp.message)
                         if(resp.message){
                             frm.doc.invalid_distance = resp.message.invalid_distance
                             frm.refresh_field("invalid_distance");
