@@ -4,7 +4,8 @@ import math
 def calculate_distance(emp_lat, emp_long):
     system_latitude = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'latitude';", as_dict=1)
     system_longitude = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'longitude';", as_dict=1)
-    if not system_latitude or not system_longitude:
+    enable_location = maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'enable';", as_dict=1)[0].get('value')
+    if not system_latitude or not system_longitude and enable_location == 1:
         frappe.throw('Ask admin to enter latitude & longitude in attendance setting')
         return {
             'invalid_distance' : 1
@@ -26,14 +27,14 @@ def calculate_distance(emp_lat, emp_long):
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
         employee_distance = radius * c * 1000
         maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'maximum_distance';", as_dict=1)[0].get('value')
-        if employee_distance > float(maximum_allowed_distance):
+        if employee_distance > float(maximum_allowed_distance) and enable_location == 1:
             return {
                 'invalid_distance' : 1
             }
+        else:
+            return {
+                'invalid_distance' : 0
+            }
 
-def validate_attendance(doc, method):
-    enable_location = maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'enable';", as_dict=1)[0].get('value')
-    if doc.invalid_distance == 1 and enable_location == 1:
-        maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'maximum_distance';", as_dict=1)[0].get('value')
-        frappe.throw("You can not mark attendance as your distance is greater than {0} meter".format(maximum_allowed_distance))
+
 

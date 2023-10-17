@@ -40,5 +40,10 @@ frappe.ui.form.on('Attendance', {
             // Geolocation is not available in this browser
             console.error("Geolocation is not available in this browser.");
         }
+    },
+    validate: function(frm){
+        if(frm.doc.invalid_distance === 1){
+            frappe.throw("You can not mark attendance as you are exceeding the allowed distance")
+        }
     }
 })

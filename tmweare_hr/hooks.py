@@ -103,9 +103,9 @@ doctype_js = {"Attendance" : "public/js/attendance.js"}
 # Hook on document methods and events
 
 doc_events = {
-	"Attendance": {
-		"validate": "tmweare_hr.api.validate_attendance"
-	}
+	# "Attendance": {
+	# 	"validate": "tmweare_hr.api.validate_attendance"
+	# }
 }
 
 # Scheduled Tasks
