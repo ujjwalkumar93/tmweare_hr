@@ -7,7 +7,7 @@ def calculate_distance(emp_lat, emp_long):
     if not system_latitude or not system_longitude:
         frappe.throw('Ask admin to enter latitude & longitude in attendance setting')
         return {
-            'invalid_ditsance' : 1
+            'invalid_distance' : 1
         }
     else:
         # Radius of the Earth in kilometers
@@ -28,12 +28,12 @@ def calculate_distance(emp_lat, emp_long):
         maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'maximum_distance';", as_dict=1)[0].get('value')
         if employee_distance > float(maximum_allowed_distance):
             return {
-                'invalid_ditsance' : 1
+                'invalid_distance' : 1
             }
 
 def validate_attendance(doc, method):
     enable_location = maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'enable';", as_dict=1)[0].get('value')
-    if doc.invalid_ditsance == 1 and enable_location == 1:
+    if doc.invalid_distance == 1 and enable_location == 1:
         maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'maximum_distance';", as_dict=1)[0].get('value')
         frappe.throw("You can not mark attendance as your distance is greater than {0} meter".format(maximum_allowed_distance))
 
