@@ -9,7 +9,8 @@
  "field_order": [
   "latitude",
   "longitude",
-  "maximum_distance"
+  "maximum_distance",
+  "enable"
  ],
  "fields": [
   {
@@ -28,12 +29,18 @@
    "fieldname": "maximum_distance",
    "fieldtype": "Int",
    "label": "Maximum Distance"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable",
+   "fieldtype": "Check",
+   "label": "Enable"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-10-17 12:57:02.849233",
+ "modified": "2023-10-17 17:09:56.114898",
  "modified_by": "Administrator",
  "module": "Tmweare HR",
  "name": "Attendance Setting",
