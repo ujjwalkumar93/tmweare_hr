@@ -1,5 +1,5 @@
 frappe.ui.form.on('Attendance', {
-    onload: function(frm){
+    employee: function(frm){
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 // The position object contains latitude and longitude
@@ -12,7 +12,7 @@ frappe.ui.form.on('Attendance', {
                         emp_long : employeeLongitude
                     },
                     callback : (resp) => {
-                        console.log('responce is: ', resp.message)
+                        console.log('responce is: ', resp.message.invalid_distance)
                         if(resp.message){
                             frm.doc.invalid_distance = resp.message.invalid_distance
                             frm.refresh_field("invalid_distance");
