@@ -29,7 +29,6 @@ def calculate_distance(emp_lat, emp_long):
             employee_distance = radius * c * 1000
             maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'maximum_distance';", as_dict=1)[0].get('value')
             frappe.throw("{0}-{1}".format(employee_distance, maximum_allowed_distance))
-            frappe.throw('{0} - {1}'.format(employee_distance,maximum_allowed_distance ))
             if employee_distance > float(maximum_allowed_distance):
                 invalid_distance = 1
     return invalid_distance
