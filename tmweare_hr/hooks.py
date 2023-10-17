@@ -103,8 +103,8 @@ doctype_js = {"Attendance" : "public/js/attendance.js"}
 # Hook on document methods and events
 
 doc_events = {
-	"Salary Slip": {
-		"before_insert": "tmweare_hr.api.validate_salary_slip"
+	"Attendance": {
+		"validate": "tmweare_hr.api.validate_attendance"
 	}
 }
 
