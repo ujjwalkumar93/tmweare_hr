@@ -1,17 +1,28 @@
 import frappe
+import math
+@frappe.whitelist()
+def calculate_distance(emp_lat, emp_long):
+    system_latitude = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'latitude';", as_dict=1)
+    system_longitude = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'longitude';", as_dict=1)
+    if not system_latitude or not system_longitude:
+        frappe.throw('Ask admin to enter latitude & longitude in attendance setting')
+    else:
+        # Radius of the Earth in kilometers
+        radius = 6371.0
 
-def validate_salary_slip(doc, method):
-    payroll_entry_doc = frappe.get_doc('Payroll Entry', doc.get('payroll_entry'))
-    
-    print('###22'*300)
-    print(payroll_entry_doc)
-    for emp in payroll_entry_doc.employees:
-        print('____', emp.get('employee'))
-        ssa = frappe.get_doc('Salary Structure Assignment', {
-            'employee' : emp.get('employee'),
-            'salary_structure' : 'Worker - Salary Structure -1'
-        })
-        print(ssa)
-        total = ssa.get('base') + ssa.get('dearness_allowance') + ssa.get('hra') + ssa.get('conveyance') + ssa.get('medical_allowance') + ssa.get('other_allowance') + ssa.get('special_allowance') + ssa.get('education')
-        print('total: ', total)
+        # Convert latitude and longitude from degrees to radians
+        system_lat = math.radians(float(system_latitude[0].get('value')))
+        system_lon = math.radians(float(system_longitude[0].get('value')))
+        emp_lat = math.radians(float(emp_lat))
+        emp_lon = math.radians(float(emp_long))
+
+        # Haversine formula
+        dlon = emp_lon - system_lon
+        dlat = emp_lat - system_lat
+        a = math.sin(dlat / 2)**2 + math.cos(system_lat) * math.cos(emp_lat) * math.sin(dlon / 2)**2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        employee_distance = radius * c * 1000
+        maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'maximum_distance';", as_dict=1)[0].get('value')
+        if employee_distance > float(maximum_allowed_distance):
+            frappe.throw("You can not mark attendance as your distance is greater than {0} meter".format(maximum_allowed_distance))
 
