@@ -5,6 +5,7 @@ def calculate_distance(emp_lat, emp_long):
     system_latitude = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'latitude';", as_dict=1)
     system_longitude = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'longitude';", as_dict=1)
     enable_location = maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'enable';", as_dict=1)[0].get('value')
+    frappe.throw(enable_location)
     if enable_location == 1:
         if not system_latitude or not system_longitude:
             frappe.throw('Ask admin to enter latitude & longitude in attendance setting')
