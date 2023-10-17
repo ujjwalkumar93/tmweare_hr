@@ -14,7 +14,7 @@ frappe.ui.form.on('Attendance', {
                     callback : (resp) => {
                         console.log('responce is: ', resp.message)
                         if(resp.message){
-                            frm.doc.invalid_distance = resp.message.invalid_distance
+                            frm.doc.invalid_distance = resp.message
                             frm.refresh_field("invalid_distance");
                         }
                     }
