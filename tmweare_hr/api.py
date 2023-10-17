@@ -32,7 +32,8 @@ def calculate_distance(emp_lat, emp_long):
             }
 
 def validate_attendance(doc, method):
-    if doc.invalid_ditsance == 1:
+    enable_location = maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'enable';", as_dict=1)[0].get('value')
+    if doc.invalid_ditsance == 1 and enable_location == 1:
         maximum_allowed_distance = frappe.db.sql("select value from `tabSingles` where doctype = 'Attendance Setting' and field = 'maximum_distance';", as_dict=1)[0].get('value')
         frappe.throw("You can not mark attendance as your distance is greater than {0} meter".format(maximum_allowed_distance))
 
