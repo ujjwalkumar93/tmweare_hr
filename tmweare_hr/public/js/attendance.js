@@ -9,7 +9,8 @@ frappe.ui.form.on('Attendance', {
                     method: 'tmweare_hr.api.calculate_distance',
                     args : {
                         emp_lat : employeeLatitude,
-                        emp_long : employeeLongitude
+                        emp_long : employeeLongitude,
+                        branch : frm.doc.branch
                     },
                     callback : (resp) => {
                         console.log('responce is: ', resp.message)
