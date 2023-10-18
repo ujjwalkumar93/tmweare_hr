@@ -24,9 +24,9 @@ def calculate_distance(emp_lat, emp_long, branch):
             a = math.sin(dlat / 2)**2 + math.cos(system_lat) * math.cos(emp_lat) * math.sin(dlon / 2)**2
             c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
             employee_distance = radius * c * 1000
-            maximum_allowed_distance = frappe.db.sql("select custom_maximum_distance from `tabBranch` where name = '{0}';".format(branch), as_dict=1)
+            maximum_allowed_distance = frappe.db.sql("select maximum_distance from `tabBranch` where name = '{0}';".format(branch), as_dict=1)
 
-            if maximum_allowed_distance and employee_distance > maximum_allowed_distance[0].get('custom_maximum_distance'):
+            if maximum_allowed_distance and employee_distance > maximum_allowed_distance[0].get('maximum_distance'):
                 invalid_distance = 1
                 return invalid_distance
     return invalid_distance
